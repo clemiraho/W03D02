@@ -20,9 +20,8 @@ while my_game.is_still_ongoing? do
   my_game.new_players_in_sight
   my_game.show_players
   my_game.menu
-  puts "************************************************************************"
   my_game.menu_choice(gets.chomp)
-  break if my_game.players_left < 1  #Le seul joueur pourrai être vivant après #menu_choice c'est le héro. On break ici si c'est le cas
+  break if my_game.players_left < 1 
   my_game.enemies_attack
 end
 my_game.end
