@@ -1,17 +1,18 @@
-
 require 'bundler'
 Bundler.require
 
 require_relative 'lib/player'
 require_relative 'lib/game'
 
-puts "---------------------------------------------------"
-puts "|       Bienvenue à ILS VEULENT TOUS MA POO       |"
-puts "| Le but du jeu est d'être le dernier survivant ! |"
-puts "---------------------------------------------------\n\n"
+puts "-------------------------------------------------"
+puts "|        Prêt à jouer au cul de chouette !      |"
+puts "|  Le but du jeu est d'être le ..... gagnant !  |"
+puts "-------------------------------------------------"
 
-puts "Quel est ton pseudo ? "
-print ">"
+print "Quel est ton nom ?"
+print "=>"
+player_name = gets.chomp
+puts "Bonjour #{player_name} !"
 
 my_game = Game.new(gets.chomp)
 

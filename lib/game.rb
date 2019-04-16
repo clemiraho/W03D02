@@ -9,7 +9,7 @@ class Game
   end
 
   def kill_player(dead_player)
-    ennemies_in_sight.delete_if { |ennemi| ennemi == dead_player }  #on utilise @var car on ne travail plus avec l'objet direct mais l'objet contenu dans la var d'instance
+    ennemies_in_sight.delete_if { |ennemi| ennemi == dead_player }  
     players_left -= 1
   end
 
@@ -18,20 +18,23 @@ class Game
   end
 
   def show_players
-    puts "========= Le joueur #{human_player.name} a #{human_player.life_points} pv ========="
-    puts "======== Il y a #{ennemies_in_sight.length} ennemis en vue ======="
+    puts "Le joueur #{human_player.name} a #{human_player.life_points} bûches"
+    puts "Il y a #{ennemies_in_sight.length} glands encore"
   end
 
   def menu
-    puts "\n\nQuelle action veux-tu effectuer ?"
-    puts "a - Chercher une meilleure arme"
-    puts "s - Se soigner"
-    puts "\n\nAttaquer un joueur en vu:"
+    puts "Quest-ce-que toi tu fais?"
+    puts "a - Un meilleur quignon de pain à envoyé sur le voisin"
+    puts "s - Encore une fois le Graal pour soigner"
+
+    
+    puts "Attaquer un gland:"
     ennemies_in_sight.each_with_index { |ennemi, i| puts "#{i} -" + ennemi.show_state }
-    print ">"
+    print "=>"
   end
 
-  def menu_choice(choice)
+  def menu_choice(choice)                      #le problème se situ dans ces environs, mais là j'ai les yeux qui se croisent
+                                               #tant pis, I'll try again next time
     case choice
     when "a"
       human_player.search_weapon
@@ -40,17 +43,16 @@ class Game
     when /[0-9]/
       begin
         human_player.attacks(ennemies_in_sight[choice.to_i])
-        kill_player(ennemies_in_sight[choice.to_i]) if ennemies_in_sight[choice.to_i].life_points <= 0  #rescue d'une NoMethodeError au cas où un joueur meurt et qu'on tape quand même une commande
-      rescue NoMethodError                                                           #pour attaquer un joueur mort.
-        puts "Cette touche n'a pas de choix tampis tu passe ton tour ! \n\n"
+        kill_player(ennemies_in_sight[choice.to_i]) if ennemies_in_sight[choice.to_i].life_points <= 0                                                         
+        puts "Hey ça passe son tour !"
       end
     else
-      puts "Cette touche n'a pas de choix tampis tu passe ton tour ! \n\n"
+      puts "Hey ça passe son tour !"
     end
   end
 
   def enemies_attack
-    puts "Les autres joueurs attaquent !"
+    puts "Les autres glands arrivent !"
     ennemies_in_sight.each { |ennemi| ennemi.attacks(human_player) if human_player.life_points > 0 }
   end
 
@@ -58,28 +60,28 @@ class Game
     dice = rand(1..6)
     case dice
     when 1
-      puts "Aucun ennemi en vue\n\n"
+      puts "Rien à voir on dégage"
     when 2..4
       if ennemies_in_sight.count < (players_left - 1)
          ennemies_in_sight << Player.new("player#{rand(1..100)}")
-         puts "Un nouvel ennemi en vue !\n\n"
+         puts "Un autre gland arrive !"
       else
-         puts "Tous les ennemis sont déjà en vue\n\n"
+         puts "Ils sont déjà tous là"
       end
     when 5, 6
       if ennemies_in_sight.count < (players_left - 2)
          2.times do
            ennemies_in_sight << Player.new("player#{rand(1..100)}")
          end
-         puts "Deux nouveaux ennemis en vue !\n\n"
+         puts "Deux glandus nouveaux !"
       else
-         puts "Tous les ennemis sont déjà en vue\n\n"
+         puts "Ils sont déjà tous là"
       end
     end
   end
 
   def end
-    puts "Le jeu est fini !"
-    ennemies_in_sight.all? {|ennemi| ennemi.life_points <= 0} ? (puts "Bravo ! Tu as gagné !") : (puts "Loser ! Tu as perdu !")
+    puts "Le jeu est ............... fini !"
+    ennemies_in_sight.all? {|ennemi| ennemi.life_points <= 0} ? (puts "Bravo ! Tu as gagné ! Maintenant on va jouer à saute Sloubi") : (puts "Loser ! Tu as perdu !")
   end
 end
